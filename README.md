@@ -120,16 +120,16 @@ index, and value.  Index is a char* of the current index value, and value*
 is a pointer to the associated data.  Remember that the iterator is a pointer
 value, so to access use iter->index and iter->value.
 
-`jsl\_iter* = jsl_iter_from_start(jsl* judy, char* starting_point)
-jsl\_iter* = jsl_iter_from_end(jsl* judy, char* starting_point)`
+```jsl_iter* jsl_iter_from_start(jsl* judy, char* starting_point)
+jsl_iter* jsl_iter_from_end(jsl* judy, char* starting_point)```
   Begins an interation over the array.  The `starting_point` paramter is 
   optional, if specified it will begin the search from that index.  
   Pass NULL as the starting\_point to search from either the start or end, 
   depending on which function you used.
   Searches are alphabetical based on the index value.
  
-`int jsl\_iter\_next(jsl* judy, jsl_iter* iter)
-int jsl\_iter\_prev(jsl* judy, jsl_iter* iter)`
+```int jsl\_iter\_next(jsl* judy, jsl_iter* iter)
+int jsl\_iter\_prev(jsl* judy, jsl_iter* iter)```
   Steps to the next or previous entry in the array.  Can return
   `JSL_END_REACHED` if you attempt to iterate past either end of the array. 
 
