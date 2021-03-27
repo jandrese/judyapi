@@ -17,7 +17,7 @@ global error handler callback that can be set to determine what to do when
 an error occurs.  Several handlers are included in the API, but you are also
 free to define your own.  
 
-To set a handler simply assign it to the jsl\_error\_handler variable like so:
+To set a handler use `jsl_set_error_handler` like so:
 
 `jsl_set_error_handler(jsl* judy, &jsl_error_stderr);`
 
@@ -54,20 +54,20 @@ trigger the error API, but it will return an error value `JSL_NOT_FOUND`.
 Judy arrays will manage the memory for the keys.  It is not necessary to keep
 a copy of the index value yourself.  You can optionally set a cleanup callback
 for the objects to have the API clean them up for you.  This is highly 
-reccomended as some functions, like jsl\_insert() will leak memory if the 
+reccomended as some functions, like `jsl_insert` will leak memory if the 
 cleanup callback is not set and the value pointer is to data on the heap.
 
 By default no cleanup is performed.  You can set the cleanup callback using
 the following function:
 
-jsl\_set\_cleanup\_handler(jsl* judy, &jsl\_value\_cleanup);
+`jsl_set_cleanup_handler(jsl* judy, &jsl_value_cleanup);`
 
 The prototype for the cleanup callback is:
-int callback(void* your\_data, char** error\_string)
+`int callback(void* your_data, char** error_string)`
 
 Your callback should return 0 if the cleanup was successful.  In the event of
 and error you should return anything but zero and if possible set the 
-error_string parameter to something useful.  The error code and string will
+`error_string` parameter to something useful.  The error code and string will
 be propagated to the error handler you have configured.
 
 ## API Usage:
@@ -81,37 +81,37 @@ All API calls that return int return 0 on success, and a non-zero error code
 otherwise.  The possible error codes are documented with each API call.
 
 ### Functions:
-jsl* jsl\_init()
+`jsl* jsl_init()`
   Returns an initalized but empty jsl object.  
 
-int jsl\_insert(jsl* judy, char* index, void* value)
+`int jsl_insert(jsl* judy, char* index, void* value)`
   Adds the value 'value' under the key 'index' to the Judy array.  If the index
   already exists then the value is overwritten.  If not the index is created.
 
-int jsl\_create(jsl* judy, char* index, void* value)
+`int jsl_create(jsl* judy, char* index, void* value)`
   Adds the value 'value' under the key 'index' to the Judy array.  If the index
   already exists then the value is NOT changed and the API, and the error code
-  JSL\_ERROR\_EXISTS is returned. 
+  `JSL_ERROR_EXISTS` is returned. 
 
-int jsl\_update(jsl* judy, char* index, void* value)
+`int jsl_update(jsl* judy, char* index, void* value)`
   Updates the field 'index' with 'value'.  If the index value is not in the the
-  array the error code JSL_ERROR_NOT_FOUND is returned.  Note that the cleanup
+  array the error code `JSL_ERROR_NOT_FOUND` is returned.  Note that the cleanup
   call will be used on the old value first.
 
-int jsl\_delete(jsl* judy, char* index)
-  Removes the value 'index' from the array.  Returns JSL_ERROR_NOT_FOUND if the
+`int jsl_delete(jsl* judy, char* index)`
+  Removes the value 'index' from the array.  Returns `JSL_ERROR_NOT_FOUND` if the
   index is not in the array.
 
-int jsl\_map(jsl* judy, int (*callback)(const char* index, void* value))
+`int jsl_map(jsl* judy, int (*callback)(const char* index, void* value))`
   Iterates through every index in the array and calls the callback function for
   each entry.  Your callback should return 0 to continue iterating, 1 to stop
   iterating, and anything else to stop iterating and throw an error. 
 
-int jsl\_free(jsl* judy)
+`int jsl_free(jsl* judy)`
   Destroys all objects in the array, and then cleans up the remnants of the 
   array.
 
-Iterating over the array.
+## Iterating over the items
 If the map function is too restrictive you can also iterate over the array.
 This allows you to change the array while iterating for example.  The way it 
 works is you create an iterator object using the from\_start or from\_end 
@@ -120,20 +120,20 @@ index, and value.  Index is a char* of the current index value, and value*
 is a pointer to the associated data.  Remember that the iterator is a pointer
 value, so to access use iter->index and iter->value.
 
-jsl\_iter* = jsl\_iter\_from\_start(jsl* judy, char* starting\_point)
-jsl\_iter* = jsl\_iter\_from\_end(jsl* judy, char* starting\_point)
-  Begins an interation over the array.  The starting\_point paramter is 
+`jsl\_iter* = jsl_iter_from_start(jsl* judy, char* starting_point)
+jsl\_iter* = jsl_iter_from_end(jsl* judy, char* starting_point)`
+  Begins an interation over the array.  The `starting_point` paramter is 
   optional, if specified it will begin the search from that index.  
   Pass NULL as the starting\_point to search from either the start or end, 
   depending on which function you used.
   Searches are alphabetical based on the index value.
  
-int jsl\_iter\_next(jsl* judy, jsl\_iter* iter)
-int jsl\_iter\_prev(jsl* judy, jsl\_iter* iter)
+`int jsl\_iter\_next(jsl* judy, jsl_iter* iter)
+int jsl\_iter\_prev(jsl* judy, jsl_iter* iter)`
   Steps to the next or previous entry in the array.  Can return
-  JSL\_END\_REACHED if you attempt to iterate past either end of the array. 
+  `JSL_END_REACHED` if you attempt to iterate past either end of the array. 
 
-int jsl\_iter\_free(jsl\_iter* iter)
+`int jsl_iter_free(jsl_iter* iter)`
   Cleans up a iterator structure.
 
 
