@@ -23,7 +23,7 @@ To set a handler simply assign it to the jsl\_error\_handler variable like so:
 
 The built-in error handlers:
 
-jsl\_error\_stderr\_exit: Default handler.  Prints the Judy error to standard out
+`jsl_error_stderr_exit`: Default handler.  Prints the Judy error to standard out
 		       and then exits the program with the Judy error code.
 
 jsl\_error\_stderr: Prints the Judy error to standard out, but allows the function
