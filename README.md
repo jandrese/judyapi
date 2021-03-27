@@ -23,31 +23,31 @@ To set a handler simply assign it to the jsl\_error\_handler variable like so:
 
 The built-in error handlers:
 
-`jsl_error_stderr_exit`: Default handler.  Prints the Judy error to standard out
+`jsl_error_stderr_exit` Default handler.  Prints the Judy error to standard out
 		       and then exits the program with the Judy error code.
 
-jsl\_error\_stderr: Prints the Judy error to standard out, but allows the function
+`jsl_error_stderr` Prints the Judy error to standard out, but allows the function
 		  to return.  The functions have their own error conditions you
 		  will have to check for in this case.  Not handling the error
 		  will result in undefined behavior.
 
-jsl\_error\_stderr\_dump\_core: Prints the Judy error to standard error, then dumps
+`jsl_error_stderr_dump_core`: Prints the Judy error to standard error, then dumps
 			    core. 
 
-jsl\_error\_ignore: Prints nothing.  As with jsl\_error\_stderr the API call will
+`jsl_error_ignore`: Prints nothing.  As with `jsl_error_stderr` the API call will
 		  return an error code that you will need to handle.  
 
 You can also define your own error handling callback.  The prototype is:
-void callback(char* API\_Name, char* API\_Error, PJError\_t* Judy\_error);
+`void callback(char* API_Name, char* API_Error, PJError_t* Judy_error);`
 
-The API_Name parameter is the API call that produced the error, in string form.
-The API_Error parameter is a string describing the problem.
-Judy_error parameter is the error returned from Judy, it may be NULL.
+The `API_Name` parameter is the API call that produced the error, in string form.
+The `API_Error` parameter is a string describing the problem.
+`Judy_error` parameter is the error structure returned from Judy, it may be NULL.
 
 Note that not all errors will call the error API.  Some are considered 
 nonfatal and will only return error codes via the API interface.  For example
-calling jsl_get with an index value that is not in the array.  This will not
-trigger the error API, but it will return an error value (JSL_NOT_FOUND).  
+calling `jsl_get` with an index value that is not in the array.  This will not
+trigger the error API, but it will return an error value `JSL_NOT_FOUND`.  
 
 ## Memory Management
 
