@@ -82,32 +82,39 @@ otherwise.  The possible error codes are documented with each API call.
 
 ### Functions:
 `jsl* jsl_init()`
+
   Returns an initalized but empty jsl object.  
 
 `int jsl_insert(jsl* judy, char* index, void* value)`
+
   Adds the value 'value' under the key 'index' to the Judy array.  If the index
   already exists then the value is overwritten.  If not the index is created.
 
 `int jsl_create(jsl* judy, char* index, void* value)`
+
   Adds the value 'value' under the key 'index' to the Judy array.  If the index
   already exists then the value is NOT changed and the API, and the error code
   `JSL_ERROR_EXISTS` is returned. 
 
 `int jsl_update(jsl* judy, char* index, void* value)`
+
   Updates the field 'index' with 'value'.  If the index value is not in the the
   array the error code `JSL_ERROR_NOT_FOUND` is returned.  Note that the cleanup
   call will be used on the old value first.
 
 `int jsl_delete(jsl* judy, char* index)`
+
   Removes the value 'index' from the array.  Returns `JSL_ERROR_NOT_FOUND` if the
   index is not in the array.
 
 `int jsl_map(jsl* judy, int (*callback)(const char* index, void* value))`
+
   Iterates through every index in the array and calls the callback function for
   each entry.  Your callback should return 0 to continue iterating, 1 to stop
   iterating, and anything else to stop iterating and throw an error. 
 
 `int jsl_free(jsl* judy)`
+
   Destroys all objects in the array, and then cleans up the remnants of the 
   array.
 
@@ -130,9 +137,9 @@ value, so to access use iter->index and iter->value.
   depending on which function you used.
   Searches are alphabetical based on the index value.
  
-`int jsl\_iter\_next(jsl* judy, jsl_iter* iter)`
+`int jsl_iter_next(jsl* judy, jsl_iter* iter)`
 
-`int jsl\_iter\_prev(jsl* judy, jsl_iter* iter)`
+`int jsl_iter_prev(jsl* judy, jsl_iter* iter)`
 
   Steps to the next or previous entry in the array.  Can return
   `JSL_END_REACHED` if you attempt to iterate past either end of the array. 
